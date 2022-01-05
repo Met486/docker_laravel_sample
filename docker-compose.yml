@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  php:
+    build: ./base/php
+    container_name: php
+    volumes:
+      - ./backend:/work
+
+  nginx:
+    image: nginx:1.20.2-alpine
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./backend:/work
+      - ./base/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /work
+
+  db:
+    build: ./base/mysql
+    volumes:
+      - db-store:/var/lib/mysql
+
+volumes:
+  db-store:
